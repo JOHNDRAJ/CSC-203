@@ -24,7 +24,7 @@
 #     ```
 #        dude [id] [x] [y] ANIMATION_PERIOD ACTION_PERIOD LIMIT
 #       fairy [id] [x] [y] ANIMATION_PERIOD ACTION_PERIOD
-#       house [id] [x] [y]
+#       house [id] [x] [y] ACTION_PERIOD
 #       water [id] [x] [y] ANIMATION_PERIOD
 #     sapling [id] [x] [y]
 #       stump [id] [x] [y]
@@ -72,7 +72,7 @@ Entity: water  13 1
 Entity: water  14 1
 #
 Entity: tree  0 2 0.100 0.250 2
-Entity: house  3 2
+Entity: house  3 2 1.0
 Entity: tree  11 2 0.125 0.063 3
 Entity: water  13 2
 Entity: water  14 2
@@ -223,7 +223,7 @@ Entity: water  6 11
 Entity: water  7 11
 Entity: water  8 11
 Entity: water  9 11
-Entity: house  11 11
+Entity: house  11 11 1.0
 #
 Entity: water  4 12
 Entity: water  5 12
@@ -243,14 +243,14 @@ Entity: water  9 13
 Entity: water  10 13
 Entity: tree  14 13 0.313 0.625 8
 #
-Entity: house  2 14
+Entity: house  2 14 1.0
 Entity: dude wario 3 14 1.500 0.500 1
 Entity: water  5 14
 Entity: water  6 14
 Entity: water  7 14
 Entity: water  8 14
 Entity: water  9 14
-Entity: house  12 14
+Entity: house  12 14 1.0
 Entity: tree  13 14 0.313 0.625 7
 Entity: tree  14 14 0.250 0.500 8
 Entity: tree  15 14 0.375 0.750 9
@@ -339,7 +339,7 @@ Entity: water  19 14
 Entity: water  20 14
 Entity: water  21 14
 Entity: stump  22 14
-Entity: house  25 14
+Entity: house  25 14 1.0
 Entity: water  30 14
 Entity: water  31 14
 #

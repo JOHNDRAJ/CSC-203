@@ -1,6 +1,8 @@
-import java.util.*;
+import processing.core.PApplet;
 
-import processing.core.*;
+import javax.swing.*;
+import java.util.List;
+import java.util.Optional;
 
 public final class VirtualWorld extends PApplet {
     public static final int TILE_WIDTH = 32;
@@ -29,6 +31,7 @@ public final class VirtualWorld extends PApplet {
     public World world;
     public WorldView view;
     public EventScheduler scheduler;
+    public int farmerNext = 1;
 
     /** Entrypoint that runs the Processing applet. */
     public static void main(String[] args) {
@@ -98,7 +101,9 @@ public final class VirtualWorld extends PApplet {
     /** Called to start all entity's actions and behaviors when the program starts. */
     public void scheduleActions(World world, EventScheduler scheduler, ImageLibrary imageLibrary) {
         for (Entity entity : world.getEntities()) {
-            entity.scheduleActions(scheduler, world, imageLibrary);
+            if (entity instanceof Behavioral) {
+                ((Behavioral) entity).scheduleActions(scheduler, world, imageLibrary);
+            }
         }
     }
 
@@ -118,8 +123,40 @@ public final class VirtualWorld extends PApplet {
     /** Mouse press input handling. */
     public void mousePressed() {
         Point pressed = mouseToPoint();
-        System.out.println("Click Location (" + pressed.x + ", " + pressed.y + ")");
+        List<Class<?>> buildings = List.of(Barn.class, Castle.class);
+        if (world.pointIsAroundEntity(pressed, world.findNearest(mouseToPoint(), buildings).get())
+                && !world.isOccupied(pressed)) {
 
+            if (farmerNext == 3){
+                Farmer farmer = new Farmer(
+                        Farmer.FARMER_KEY + "_" + "farmer",
+                        pressed,
+                        imageLibrary.get(Farmer.FARMER_KEY),
+                        Farmer.FARMER_ANIMATION_PERIOD,
+                        Farmer.FARMER_BEHAVIOR_PERIOD,
+                        0,
+                        1
+                );
+                world.addEntity(farmer);
+                farmer.scheduleActions(scheduler, world, imageLibrary);
+                farmerNext = 1;
+            }
+            else {
+
+                System.out.println("Click Location (" + pressed.x + ", " + pressed.y + ")");
+                Builder builder = new Builder(
+                        Builder.BUILDER_KEY + "_" + "builder",
+                        pressed,
+                        imageLibrary.get(Builder.BUILDER_KEY),
+                        Builder.BUILDER_ANIMATION_PERIOD,
+                        Builder.BUILDER_BEHAVIOR_PERIOD
+                );
+                world.addEntity(builder);
+                builder.scheduleActions(scheduler, world, imageLibrary);
+                farmerNext += 1;
+            }
+
+        }
         Optional<Entity> entityOptional = world.getOccupant(pressed);
         if (entityOptional.isPresent()) {
             Entity entity = entityOptional.get();

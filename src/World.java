@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.List;
 
 /**
  * Represents the 2D World in which this simulation is running.
@@ -80,17 +79,110 @@ public final class World {
     }
 
     /** Returns the (optional) nearest world entity of the given kind(s) to the point.*/
-    public Optional<Entity> findNearest(Point position, List<Entity.EntityKind> kinds) {
+    public Optional<Entity> findNearest(Point position, List<Class<?>> kinds) {
         List<Entity> ofType = new LinkedList<>();
-        for (Entity.EntityKind kind : kinds) {
+        for (Class<?> kind : kinds) {
             for (Entity entity : this.entities) {
-                if (entity.getKind() == kind) {
+                if (entity.getClass() == kind) {
                     ofType.add(entity);
                 }
             }
         }
 
         return nearestEntity(ofType, position);
+    }
+
+    public boolean pointIsAroundEntity(Point point, Entity entity){
+        Point entityPosition = entity.getPosition();
+        if (point.manhattanDistanceTo(entity.getPosition()) == 1){
+            return true;
+        }
+        else if (new Point(point.x + 1, point.y + 1).manhattanDistanceTo(entityPosition) == 0){
+            return true;
+        }
+        else if (new Point(point.x - 1, point.y - 1).manhattanDistanceTo(entityPosition) == 0){
+            return true;
+        }
+
+        else if (new Point(point.x + 1, point.y - 1).manhattanDistanceTo(entityPosition) == 0){
+            return true;
+        }
+        else if (new Point(point.x - 1, point.y + 1).manhattanDistanceTo(entityPosition) == 0){
+            return true;
+        }
+        return false;
+    }
+
+    /*
+    public boolean isolated(Point point, List<Class<?>> toAvoid){
+        if (findNearest(point, toAvoid).get().getPosition().manhattanDistanceTo(point) <= 1){
+            return false;
+        }
+        else if (inBounds(new Point(point.x + 1, point.y + 1)) && toAvoid.contains(getOccupant(new Point(point.x + 1, point.y + 1)).get().getClass())){
+            System.out.println("test");
+            return false;
+        }
+        else if (inBounds(new Point(point.x - 1, point.y - 1)) && toAvoid.contains(getOccupant(new Point(point.x - 1, point.y - 1)).get().getClass())){
+            System.out.println("test");
+            return false;
+        }
+        else if (inBounds(new Point(point.x + 1, point.y - 1)) && toAvoid.contains(getOccupant(new Point(point.x + 1, point.y - 1)).get().getClass())){
+            System.out.println("test");
+            return false;
+        }
+        else if (inBounds(new Point(point.x - 1, point.y + 1)) && toAvoid.contains(getOccupant(new Point(point.x - 1, point.y + 1)).get().getClass())){
+            System.out.println("test");
+            return false;
+        }
+        System.out.println("test");
+        return true;
+    }
+
+     */
+
+    public boolean isolated(Point point, List<Class<?>> toAvoid){
+        boolean occupantPresent = false;
+        if (findNearest(point, toAvoid).get().getPosition().manhattanDistanceTo(point) <= 1){
+            return false;
+        }
+        if (inBounds(new Point(point.x + 1, point.y + 1))) {
+            Optional<Entity> occupantOpt = getOccupant(new Point(point.x + 1, point.y + 1));
+            if (occupantOpt.isPresent()) {
+                Class<?> occupantClass = occupantOpt.get().getClass();
+                if (toAvoid.contains(occupantClass)) {
+                    occupantPresent = true;
+                }
+            }
+        }
+        if (inBounds(new Point(point.x - 1, point.y - 1))) {
+            Optional<Entity> occupantOpt = getOccupant(new Point(point.x - 1, point.y - 1));
+            if (occupantOpt.isPresent()) {
+                Class<?> occupantClass = occupantOpt.get().getClass();
+                if (toAvoid.contains(occupantClass)) {
+                    occupantPresent = true;
+                }
+            }
+        }
+        if (inBounds(new Point(point.x + 1, point.y - 1))) {
+            Optional<Entity> occupantOpt = getOccupant(new Point(point.x + 1, point.y - 1));
+            if (occupantOpt.isPresent()) {
+                Class<?> occupantClass = occupantOpt.get().getClass();
+                if (toAvoid.contains(occupantClass)) {
+                    occupantPresent = true;
+                }
+            }
+        }
+        if (inBounds(new Point(point.x - 1, point.y + 1))) {
+            Optional<Entity> occupantOpt = getOccupant(new Point(point.x - 1, point.y + 1));
+            if (occupantOpt.isPresent()) {
+                Class<?> occupantClass = occupantOpt.get().getClass();
+                if (toAvoid.contains(occupantClass)) {
+                    occupantPresent = true;
+                }
+            }
+        }
+        return !occupantPresent;
+
     }
 
     /** Attempts to add an entity to the world. */

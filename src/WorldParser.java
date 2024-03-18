@@ -160,14 +160,14 @@ public class WorldParser {
 
             // Parse specific properties
             return switch (key) {
-                case Entity.DUDE_KEY -> parseDude(specificProperties, id, position, imageLibrary);
-                case Entity.FAIRY_KEY -> parseFairy(specificProperties, id, position, imageLibrary);
-                case Entity.HOUSE_KEY -> parseHouse(specificProperties, id, position, imageLibrary);
-                case Entity.MUSHROOM_KEY -> parseMushroom(specificProperties, id, position, imageLibrary);
-                case Entity.WATER_KEY -> parseWater(specificProperties, id, position, imageLibrary);
-                case Entity.SAPLING_KEY -> parseSapling(specificProperties, id, position, imageLibrary);
-                case Entity.STUMP_KEY -> parseStump(specificProperties, position, id, imageLibrary);
-                case Entity.TREE_KEY -> parseTree(specificProperties, id, position, imageLibrary);
+                case Dude.DUDE_KEY -> parseDude(specificProperties, id, position, imageLibrary);
+                case Fairy.FAIRY_KEY -> parseFairy(specificProperties, id, position, imageLibrary);
+                case House.HOUSE_KEY -> parseHouse(specificProperties, id, position, imageLibrary);
+                case Mushroom.MUSHROOM_KEY -> parseMushroom(specificProperties, id, position, imageLibrary);
+                case Water.WATER_KEY -> parseWater(specificProperties, id, position, imageLibrary);
+                case Sapling.SAPLING_KEY -> parseSapling(specificProperties, id, position, imageLibrary);
+                case Stump.STUMP_KEY -> parseStump(specificProperties, position, id, imageLibrary);
+                case Tree.TREE_KEY -> parseTree(specificProperties, id, position, imageLibrary);
                 default -> throw new IllegalArgumentException(String.format("Unexpected entity key: %s", key));
             };
         } else {
@@ -177,25 +177,25 @@ public class WorldParser {
 
     /** Parses a line of Dude data. */
     private static Entity parseDude(String[] properties, String id, Point position, ImageLibrary imageLibrary) {
-        if (properties.length == Entity.DUDE_PARSE_PROPERTY_COUNT) {
+        if (properties.length == Dude.DUDE_PARSE_PROPERTY_COUNT) {
 
             // Modify to use a constructor from your class hierarchy
             // Ensure the order of all passed arguments match the desired parameters
-            return Entity.createDude(
+            return new Dude(
                     id,
                     position,
-                    imageLibrary.get(Entity.DUDE_KEY),
-                    Double.parseDouble(properties[Entity.DUDE_PARSE_PROPERTY_ANIMATION_PERIOD_INDEX]),
-                    Double.parseDouble(properties[Entity.DUDE_PARSE_PROPERTY_BEHAVIOR_PERIOD_INDEX]),
+                    imageLibrary.get(Dude.DUDE_KEY),
+                    Double.parseDouble(properties[Dude.DUDE_PARSE_PROPERTY_ANIMATION_PERIOD_INDEX]),
+                    Double.parseDouble(properties[Dude.DUDE_PARSE_PROPERTY_BEHAVIOR_PERIOD_INDEX]),
                     0,
-                    Integer.parseInt(properties[Entity.DUDE_PARSE_PROPERTY_RESOURCE_LIMIT_INDEX])
+                    Integer.parseInt(properties[Dude.DUDE_PARSE_PROPERTY_RESOURCE_LIMIT_INDEX])
             );
 
         } else {
             throw new IllegalArgumentException(String.format(
                     "%s requires %d properties when parsing, got %d",
-                    Entity.DUDE_KEY,
-                    Entity.DUDE_PARSE_PROPERTY_COUNT,
+                    Dude.DUDE_KEY,
+                    Dude.DUDE_PARSE_PROPERTY_COUNT,
                     properties.length
             ));
         }
@@ -203,23 +203,23 @@ public class WorldParser {
 
     /** Parses a line of Fairy data. */
     private static Entity parseFairy(String[] properties, String id, Point position, ImageLibrary imageLibrary) {
-        if (properties.length == Entity.FAIRY_PARSE_PROPERTY_COUNT) {
+        if (properties.length == Fairy.FAIRY_PARSE_PROPERTY_COUNT) {
 
             // Modify to use a constructor from your class hierarchy
             // Ensure the order of all passed arguments match the desired parameters
-            return Entity.createFairy(
+            return new Fairy(
                     id,
                     position,
-                    imageLibrary.get(Entity.FAIRY_KEY),
-                    Double.parseDouble(properties[Entity.FAIRY_PARSE_PROPERTY_ANIMATION_PERIOD_INDEX]),
-                    Double.parseDouble(properties[Entity.FAIRY_PARSE_PROPERTY_BEHAVIOR_PERIOD_INDEX])
+                    imageLibrary.get(Fairy.FAIRY_KEY),
+                    Double.parseDouble(properties[Fairy.FAIRY_PARSE_PROPERTY_ANIMATION_PERIOD_INDEX]),
+                    Double.parseDouble(properties[Fairy.FAIRY_PARSE_PROPERTY_BEHAVIOR_PERIOD_INDEX])
             );
 
         } else {
             throw new IllegalArgumentException(String.format(
                     "%s requires %d properties when parsing, got %d",
-                    Entity.FAIRY_KEY,
-                    Entity.FAIRY_PARSE_PROPERTY_COUNT,
+                    Fairy.FAIRY_KEY,
+                    Fairy.FAIRY_PARSE_PROPERTY_COUNT,
                     properties.length
             ));
         }
@@ -227,22 +227,22 @@ public class WorldParser {
 
     /** Parses a line of Mushroom data. */
     private static Entity parseMushroom(String[] properties, String id, Point position, ImageLibrary imageLibrary) {
-        if (properties.length == Entity.MUSHROOM_PARSE_PROPERTY_COUNT) {
+        if (properties.length == Mushroom.MUSHROOM_PARSE_PROPERTY_COUNT) {
 
             // Modify to use a constructor from your class hierarchy
             // Ensure the order of all passed arguments match the desired parameters
-            return Entity.createMushroom(
+            return new Mushroom(
                     id,
                     position,
-                    imageLibrary.get(Entity.MUSHROOM_KEY),
-                    Double.parseDouble(properties[Entity.MUSHROOM_PARSE_BEHAVIOR_PERIOD_INDEX])
+                    imageLibrary.get(Mushroom.MUSHROOM_KEY),
+                    Double.parseDouble(properties[Mushroom.MUSHROOM_PARSE_BEHAVIOR_PERIOD_INDEX])
             );
 
         } else {
             throw new IllegalArgumentException(String.format(
                     "%s requires %d properties when parsing, got %d",
-                    Entity.MUSHROOM_KEY,
-                    Entity.MUSHROOM_PARSE_PROPERTY_COUNT,
+                    Mushroom.MUSHROOM_KEY,
+                    Mushroom.MUSHROOM_PARSE_PROPERTY_COUNT,
                     properties.length
             ));
         }
@@ -250,108 +250,109 @@ public class WorldParser {
 
     /** Parses a line of House data. */
     private static Entity parseHouse(String[] properties, String id, Point position, ImageLibrary imageLibrary) {
-        if (properties.length == Entity.HOUSE_PARSE_PROPERTY_COUNT) {
+        if (properties.length == House.HOUSE_PARSE_PROPERTY_COUNT) {
 
             // Modify to use a constructor from your class hierarchy
             // Ensure the order of all passed arguments match the desired parameters
-            return Entity.createHouse(
+            return new House(
                     id,
                     position,
-                    imageLibrary.get(Entity.HOUSE_KEY)
+                    imageLibrary.get(House.HOUSE_KEY),
+                    Double.parseDouble(properties[House.HOUSE_PARSE_PROPERTY_BEHAVIOR_PERIOD_INDEX])
             );
 
         } else {
             throw new IllegalArgumentException(String.format(
                     "%s requires %d properties when parsing, got %d",
-                    Entity.HOUSE_KEY,
-                    Entity.HOUSE_PARSE_PROPERTY_COUNT,
+                    House.HOUSE_KEY,
+                    House.HOUSE_PARSE_PROPERTY_COUNT,
                     properties.length
             ));
         }
     }
 
     private static Entity parseSapling(String[] properties, String id, Point position, ImageLibrary imageLibrary) {
-        if (properties.length == Entity.SAPLING_PARSE_PROPERTY_COUNT) {
+        if (properties.length == Sapling.SAPLING_PARSE_PROPERTY_COUNT) {
 
             // Modify this to use a constructor from your class hierarchy
             // Ensure the order of all passed arguments match the desired parameters
-            return Entity.createSapling(
+            return new Sapling(
                     id,
                     position,
-                    imageLibrary.get(Entity.SAPLING_KEY)
+                    imageLibrary.get(Sapling.SAPLING_KEY)
             );
 
         } else {
             throw new IllegalArgumentException(String.format(
                     "%s requires %d properties when parsing, got %d",
-                    Entity.SAPLING_KEY,
-                    Entity.SAPLING_PARSE_PROPERTY_COUNT,
+                    Sapling.SAPLING_KEY,
+                    Sapling.SAPLING_PARSE_PROPERTY_COUNT,
                     properties.length
             ));
         }
     }
 
     private static Entity parseStump(String[] properties, Point pt, String id, ImageLibrary imageLibrary) {
-        if (properties.length == Entity.STUMP_PARSE_PROPERTY_COUNT) {
+        if (properties.length == Stump.STUMP_PARSE_PROPERTY_COUNT) {
 
             // Modify this to use a constructor from your class hierarchy
             // Ensure the order of all passed arguments match the desired parameters
-            return Entity.createStump(
+            return new Stump(
                     id,
                     pt,
-                    imageLibrary.get(Entity.STUMP_KEY)
+                    imageLibrary.get(Stump.STUMP_KEY)
             );
 
         } else {
             throw new IllegalArgumentException(String.format(
                     "%s requires %d properties when parsing, got %d",
-                    Entity.STUMP_KEY,
-                    Entity.STUMP_PARSE_PROPERTY_COUNT,
+                    Stump.STUMP_KEY,
+                    Stump.STUMP_PARSE_PROPERTY_COUNT,
                     properties.length
             ));
         }
     }
 
     private static Entity parseTree(String[] properties, String id, Point position, ImageLibrary imageLibrary) {
-        if (properties.length == Entity.TREE_PARSE_PROPERTY_COUNT) {
+        if (properties.length == Tree.TREE_PARSE_PROPERTY_COUNT) {
 
             // Modify to use a constructor from your class hierarchy
             // Ensure the order of all passed arguments match the desired parameters
-            return Entity.createTree(
+            return new Tree(
                     id,
                     position,
-                    imageLibrary.get(Entity.TREE_KEY),
-                    Double.parseDouble(properties[Entity.TREE_PARSE_PROPERTY_ANIMATION_PERIOD_INDEX]),
-                    Double.parseDouble(properties[Entity.TREE_PARSE_PROPERTY_BEHAVIOR_PERIOD_INDEX]),
-                    Integer.parseInt(properties[Entity.TREE_PARSE_PROPERTY_HEALTH_INDEX])
+                    imageLibrary.get(Tree.TREE_KEY),
+                    Double.parseDouble(properties[Tree.TREE_PARSE_PROPERTY_ANIMATION_PERIOD_INDEX]),
+                    Double.parseDouble(properties[Tree.TREE_PARSE_PROPERTY_BEHAVIOR_PERIOD_INDEX]),
+                    Integer.parseInt(properties[Tree.TREE_PARSE_PROPERTY_HEALTH_INDEX])
             );
 
         } else {
             throw new IllegalArgumentException(String.format(
                     "%s requires %d properties when parsing, got %d",
-                    Entity.TREE_KEY,
-                    Entity.TREE_PARSE_PROPERTY_COUNT,
+                    Tree.TREE_KEY,
+                    Tree.TREE_PARSE_PROPERTY_COUNT,
                     properties.length
             ));
         }
     }
 
     private static Entity parseWater(String[] properties, String id, Point position, ImageLibrary imageLibrary) {
-        if (properties.length == Entity.WATER_PARSE_PROPERTY_COUNT) {
+        if (properties.length == Water.WATER_PARSE_PROPERTY_COUNT) {
 
             // Modify to use a constructor from your class hierarchy
             // Ensure the order of all passed arguments match the desired parameters
-            return Entity.createWater(
+            return new Water(
                     id,
                     position,
-                    imageLibrary.get(Entity.WATER_KEY)
+                    imageLibrary.get(Water.WATER_KEY)
             );
 
         } else {
             throw new IllegalArgumentException(String.format(
                     "%s requires %d properties when parsing, got %d",
-                    Entity.WATER_KEY,
-                    Entity.WATER_PARSE_PROPERTY_COUNT,
+                    Water.WATER_KEY,
+                    Water.WATER_PARSE_PROPERTY_COUNT,
                     properties.length
             ));
         }
